@@ -1,0 +1,26 @@
+#!/bin/sh
+# The local agent must not commit on main.
+#
+# Session c_94deb1df (2026-07-20) ran `git add -A && git commit` then
+# `git push` on main by itself; two of those commits left main broken for
+# two days. The agent keeps full autonomy on its own branch -- the operator
+# merges what is worth keeping.
+#
+# FACTORY_AGENT is set by harness/agent_tools.py _run_command.
+
+[ "$FACTORY_AGENT" = "1" ] || exit 0
+
+branch=$(git symbolic-ref --short HEAD 2>/dev/null) || exit 0
+
+case "$branch" in
+  main|master)
+    echo "refused: the local agent must not commit on $branch." >&2
+    echo "" >&2
+    echo "  git switch -c agent/$(date +%Y%m%d-%H%M)" >&2
+    echo "" >&2
+    echo "then commit there. The operator reviews and merges." >&2
+    exit 1
+    ;;
+esac
+
+exit 0

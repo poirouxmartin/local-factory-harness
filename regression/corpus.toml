@@ -1,0 +1,77 @@
+# The frozen replay corpus. Entries point at archived jobs/<id>/ dirs -- the
+# spec and base_sha live THERE; this file only carries suite metadata.
+# Curated 2026-07-18. smoke ~ 4 jobs / ~15 min warm; full ~ 12 jobs / 2-3 h.
+
+[thresholds]
+attempts_slack = 1
+seconds_factor = 1.6
+confirm_replays = 2
+
+# --- smoke: one entry per axis (pytest 7b, vitest 7b, diff multi-file 30b, node 35b)
+
+# j_f18b8f3b (slugify demo, 7b/6.8s) retired 18/07: its base_sha 52e62d6
+# predates harness/tests, so the current regression_cmd can never pass in
+# the replay worktree (2x RegressionCommandError, run 20260718-221837).
+[jobs.j_8e0944d1]
+tier = "smoke"
+expected = "green"
+note = "local-factory pytest, trivial single-file slugify, closed by 7b in 77s"
+
+[jobs.j_1e75691f]
+tier = "smoke"
+expected = "green"
+note = "lucena vitest formatEloDelta, real Next.js repo, 7b 2 attempts"
+
+[jobs.j_7e0084b0]
+tier = "smoke"
+expected = "green"
+note = "crgpd-rerun diff 3-file category scoring, 30b on llama-server, 128s"
+
+[jobs.j_3a6a7681]
+tier = "smoke"
+expected = "green"
+note = "blitzvolley node runner ranks.js, closed by 35b"
+
+# --- full additions
+
+[jobs.j_7f110665]
+tier = "full"
+expected = "green"
+note = "local-factory slugify, 7b 1 attempt"
+
+[jobs.j_9631eba1]
+tier = "full"
+expected = "green"
+note = "local-factory loop.py attempt records, 7b, real harness file"
+
+[jobs.j_0e2bf531]
+tier = "full"
+expected = "green"
+note = "local-factory benchmark.py refactor, 7b"
+
+[jobs.j_5a1e2ee8]
+tier = "full"
+expected = "green"
+note = "session_audit module, took the whole ladder to 35b, 9 attempts"
+
+[jobs.j_bcf15a3c]
+tier = "full"
+expected = "green"
+note = "crgpd diff multi-file via ladder (30b closer), 595s"
+
+[jobs.j_e2a040ff]
+tier = "full"
+expected = "green"
+note = "crgpd diff multi-file closed by 35b, 4 attempts"
+
+# --- probes: historically red, non-blocking; green here = PROGRESS
+
+[jobs.j_bc119315]
+tier = "full"
+expected = "probe"
+note = "loop.py task that burned 10 attempts red pre-guards (2026-07-14)"
+
+[jobs.j_d85cd85b]
+tier = "full"
+expected = "probe"
+note = "crgpd diff multi-file red on 35b, 727s"

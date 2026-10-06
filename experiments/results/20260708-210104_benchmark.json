@@ -1,0 +1,106 @@
+{
+  "summary": [
+    {
+      "model": "qwen2.5-coder:7b",
+      "task": "roman",
+      "runs": 2,
+      "success_rate": 1.0,
+      "mean_attempts": 1,
+      "mean_seconds": 7.4
+    },
+    {
+      "model": "qwen2.5-coder:7b",
+      "task": "calculator",
+      "runs": 2,
+      "success_rate": 1.0,
+      "mean_attempts": 1,
+      "mean_seconds": 3.5
+    }
+  ],
+  "raw": [
+    {
+      "task": "roman",
+      "model": "qwen2.5-coder:7b",
+      "persona": "coder",
+      "temperature": 0.1,
+      "num_ctx": 16384,
+      "success": true,
+      "attempts_used": 1,
+      "total_seconds": 7.5,
+      "attempts": [
+        {
+          "attempt": 1,
+          "tokens_per_s": 110.3,
+          "gen_seconds": 7.3,
+          "passed": true,
+          "tests_passed": 25,
+          "tests_failed": 0,
+          "stub_violations": 0
+        }
+      ]
+    },
+    {
+      "task": "roman",
+      "model": "qwen2.5-coder:7b",
+      "persona": "coder",
+      "temperature": 0.1,
+      "num_ctx": 16384,
+      "success": true,
+      "attempts_used": 1,
+      "total_seconds": 7.3,
+      "attempts": [
+        {
+          "attempt": 1,
+          "tokens_per_s": 112.7,
+          "gen_seconds": 7.2,
+          "passed": true,
+          "tests_passed": 25,
+          "tests_failed": 0,
+          "stub_violations": 0
+        }
+      ]
+    },
+    {
+      "task": "calculator",
+      "model": "qwen2.5-coder:7b",
+      "persona": "coder",
+      "temperature": 0.1,
+      "num_ctx": 16384,
+      "success": true,
+      "attempts_used": 1,
+      "total_seconds": 3.6,
+      "attempts": [
+        {
+          "attempt": 1,
+          "tokens_per_s": 114.7,
+          "gen_seconds": 3.4,
+          "passed": true,
+          "tests_passed": 5,
+          "tests_failed": 0,
+          "stub_violations": 0
+        }
+      ]
+    },
+    {
+      "task": "calculator",
+      "model": "qwen2.5-coder:7b",
+      "persona": "coder",
+      "temperature": 0.1,
+      "num_ctx": 16384,
+      "success": true,
+      "attempts_used": 1,
+      "total_seconds": 3.5,
+      "attempts": [
+        {
+          "attempt": 1,
+          "tokens_per_s": 114.2,
+          "gen_seconds": 3.4,
+          "passed": true,
+          "tests_passed": 5,
+          "tests_failed": 0,
+          "stub_violations": 0
+        }
+      ]
+    }
+  ]
+}

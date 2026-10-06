@@ -1,0 +1,7 @@
+{
+  "name": "expr",
+  "target_file": "expr.py",
+  "test_args": ["-q"],
+  "max_attempts": 5,
+  "goal": "Rewrite `evaluate` so it correctly parses arithmetic with operator precedence, parentheses, unary minus, and whitespace. Support + - * / on floats, raise ZeroDivisionError on divide-by-zero and ValueError on bad tokens. Keep the public signature `evaluate(expression) -> float`."
+}

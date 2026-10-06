@@ -1,0 +1,7 @@
+{
+  "success": false,
+  "attempts": 10,
+  "stages_used": 4,
+  "final_model": "qwen3.6:35b",
+  "total_seconds": 688.2
+}

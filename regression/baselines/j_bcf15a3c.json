@@ -1,0 +1,7 @@
+{
+  "success": true,
+  "attempts": 3,
+  "stages_used": 1,
+  "final_model": "qwen3-coder:30b",
+  "total_seconds": 595.7
+}

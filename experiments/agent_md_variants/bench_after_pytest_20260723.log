@@ -1,0 +1,17 @@
+bench start 09:49:43  model=qwen3-coder:30b  runs=2
+  A/add_function_and_test/0 ...
+    ok=True calls=5 err=0 miss=0 tok=125 22.3s
+  A/add_function_and_test/1 ...
+    ok=True calls=5 err=0 miss=0 tok=152 9.6s
+  B/add_function_and_test/0 ...
+    ok=True calls=7 err=0 miss=0 tok=83 11.5s
+  B/add_function_and_test/1 ...
+    ok=True calls=7 err=0 miss=0 tok=182 12.2s
+
+--- summary (means per run, err/miss are totals) ---
+A  ok 2/2  calls 5.0  err 0  miss 0  tok 138  15.9s
+B  ok 2/2  calls 7.0  err 0  miss 0  tok 132  11.8s
+  add_function_and_test
+    A  ok 2/2  calls 5.0  err 0  miss 0  tok 138  15.9s
+    B  ok 2/2  calls 7.0  err 0  miss 0  tok 132  11.8s
+bench done 09:50:40

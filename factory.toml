@@ -1,0 +1,256 @@
+# The delegation perimeter.
+#
+# `delegate` refuses any project that is not a key below. A project name is a key,
+# never a path -- that is what makes `delegate("../../etc")` meaningless.
+#
+# No path appears in this file: it says WHICH projects the factory may touch,
+# factory.local.toml says WHERE they live on this computer. `bootstrap` writes
+# the stub; a coordinate committed here is refused at load.
+#
+# Each project must be a git repo: the job runs in a worktree on branch
+# factory/<job_id>, and the deliverable is a diff against its HEAD.
+#
+# `runner` is the test harness: "pytest" or "vitest".
+# - pytest: regression_cmd is argv for the harness Python (sys.executable + argv).
+# - vitest: regression_cmd is the FULL command, run inside the worktree; the
+#   project's node_modules is junctioned in, so node_modules/... resolves.
+#   The project must have node_modules installed (npm install) before delegating.
+
+[projects.local-factory]
+runner = "pytest"
+# A job is green only when this suite is still green. Without it, a model can
+# satisfy its own spec and break everything else.
+regression_cmd = ["-m", "pytest", "harness/tests", "-q"]
+
+[projects.lucena]
+runner = "vitest"
+regression_cmd = ["node", "node_modules/vitest/vitest.mjs", "run"]
+
+[projects.conformergpd]
+runner = "vitest"
+# Verified green baseline with this exact command: 13 files / 58 tests pass
+# (2026-07-17). Next.js app -- vitest only covers lib/unit scope; no e2e here.
+regression_cmd = ["node", "node_modules/vitest/vitest.mjs", "run"]
+
+[projects.blitzvolley]
+runner = "node"
+# The directory form (`node --test backend/test/`) does not collect on this
+# node build (v25.9.0) -- a glob pattern does. bots.test.js and physics.test.js
+# are excluded: both load node_datachannel, a Linux ELF that cannot load on
+# this Windows host (documented technical debt in the project's TODO.md, not a
+# code bug -- see "Dette technique / incidents"). Verified green baseline with
+# this exact command: 206/206 pass.
+regression_cmd = ["node", "--test", "backend/test/!(bots|physics).test.js"]
+
+# Sampling profiles (spec 2026-07-15, A2). Applied as Ollama options wherever
+# the model is invoked; an explicit per-call temperature override still wins.
+# Values come from the Qwen model cards: quasi-greedy decoding on thinking
+# models is documented to cause infinite repetition (the July 14 incident).
+[models."qwen3.6:35b"]
+temperature = 0.6
+top_p = 0.95
+top_k = 20
+presence_penalty = 1.0
+
+[models."qwen3-coder:30b"]
+temperature = 0.7
+top_p = 0.8
+top_k = 20
+repeat_penalty = 1.05
+
+# Same sampling as qwen3-coder:30b on purpose: the A/B (audit 2026-07-17
+# crgpd-rerun) isolates the quant, everything else equal.
+[models."hf.co/unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF:UD-Q4_K_XL"]
+temperature = 0.7
+top_p = 0.8
+top_k = 20
+repeat_penalty = 1.05
+
+# External MCP servers (spec 2026-07-15, B5). `tools` is the allowlist --
+# playwright alone ships ~25 tools, exposing them all would bust the ~15-tool
+# budget small models can route reliably. `readonly` skips the approval gate.
+# 
+# NOTE: uvx-based servers disabled below until uv is installed.
+# To enable: pip install uv, then uncomment these sections.
+# See: https://pypi.org/project/uv/ (uv provides uvx command)
+
+# [mcp.servers.fetch]
+# command = ["uvx", "mcp-server-fetch"]
+# tools = ["fetch"]
+# readonly = ["fetch"]
+
+# npx duckduckgo-mcp-server (zhsama) only exposes one tool, duckduckgo_web_search,
+# and no fetch_content -- the uvx package (nickclyde) matches the brief's
+# search/fetch_content tools exactly, verified via tools/list.
+# [mcp.servers.search]
+# command = ["uvx", "duckduckgo-mcp-server"]
+# tools = ["search", "fetch_content"]
+# readonly = ["search", "fetch_content"]
+
+# Read-only surface only. git_add and git_commit were dropped 2026-07-27:
+# 5 calls across 256 sessions, both need approval anyway, and run_command serves
+# them identically -- while each MCP schema costs a measured 242 prompt tokens
+# against 84 for a native tool (backlog 23/07). The four kept are the ones the
+# model actually uses (31 of 36 git calls) AND the ones that skip the approval
+# gate, which run_command cannot do.
+# [mcp.servers.git]
+# command = ["uvx", "mcp-server-git"]
+# tools = ["git_status", "git_diff_unstaged", "git_diff_staged", "git_log"]
+# readonly = ["git_status", "git_diff_unstaged", "git_diff_staged", "git_log"]
+
+[mcp.servers.playwright]
+command = ["npx", "-y", "@playwright/mcp@latest"]
+# Surface limited to 6 tools: screenshots are useless to text-only local models,
+# and press_key is covered by browser_type. This keeps web toolset at exactly 15-tool budget.
+tools = ["browser_navigate", "browser_snapshot", "browser_click",
+         "browser_type", "browser_console_messages", "browser_wait_for"]
+readonly = ["browser_snapshot", "browser_console_messages"]
+
+# fetch was called ONCE in 256 sessions and is a web concern, not a dev one.
+# Dropping it plus the two git write tools takes dev from 20 exposed tools to
+# 17 (6 native + 7 carnet + 4 git), saving ~726 prompt tokens every session.
+# Still above TOOL_BUDGET (15), and deliberately so: closing the last two would
+# cost git_diff_unstaged and git_diff_staged, which the model does use, and 15
+# is a rule of thumb -- what is actually measured is the 242-tokens-per-schema
+# price, so the right move is to drop what earns nothing, not to hit a number.
+# The 7 carnet tools are the plan/memory mechanism and are not negotiable.
+# 
+# NOTE: git, fetch, search MCP servers disabled above (require uvx/uv).
+# Only playwright MCP server remains active (uses npx).
+[toolsets.dev]
+mcp = []  # git server disabled until uv is installed
+
+[toolsets.web]
+mcp = ["playwright"]  # fetch and search disabled until uv is installed
+
+# File-only surface: no run_command. The agent_bench huge_* tasks use it so a
+# model cannot script a bulk transform in one shell call (measured 2026-07-23:
+# huge_upper finished 14 files in a single PowerShell one-liner, defeating the
+# tool-round-trip accumulation the task exists to force).
+[toolsets.noshell]
+native = ["list_dir", "read_file", "search", "write_file", "edit_file"]
+
+# llama-server bench identity (18/07): same Qwen card profile as the 30b,
+# min_p pinned to 0 because llama.cpp's default is 0.05 (Ollama's is 0).
+[models."llamaserver/qwen3-coder-30b-UD-Q4_K_XL"]
+temperature = 0.7
+top_p = 0.8
+top_k = 20
+min_p = 0
+repeat_penalty = 1.05
+
+# Qwen3-Coder card profile, same rationale as the 30b entry.
+[models."llamaserver/qwen3-coder-next-UD-Q2_K_XL"]
+temperature = 0.7
+top_p = 0.8
+top_k = 20
+min_p = 0
+repeat_penalty = 1.05
+
+# Ladder runtime (bench 2026-07-18, experiments/results/20260718_llamaserver_bench.md):
+# llama-server beats Ollama on speed at quality parity. Keys are the LADDER
+# model names; each maps to a GGUF and its measured flags. The 35b rung is
+# backed by the MTP variant (+42% gen at 88% draft acceptance on code).
+# The flags are doctrine and live here; `exe` and each model's `path` are this
+# computer's business and live in factory.local.toml. Ollama blob paths are
+# pinned GGUFs: re-pulling a model changes the sha and must be reflected there.
+[llama_server]
+port = 8091
+# -c is a server start-up flag (per-request num_ctx is ignored). This is the
+# DEFAULT window, used by the jobs lane: 32k q8 KV = the tuned sweet spot
+# (66 tok/s on the 30b, KV fits in VRAM). The chat lane overrides it in
+# factory_mcp to CHAT_NUM_CTX (65536) with q4 KV -- on 12 GB, 64k q8 KV spills
+# to system RAM and halves the 30b (measured 2026-07-19: 31 vs 59 tok/s in q4).
+ctx = 32768
+# Agent tool-iteration cap per user message. 0 = no cap (the default): the
+# loop guard (identical repeats) and repetition guard (degenerate output) are
+# the runaway brakes, the Stop button the manual escape. Set a positive number
+# to bound a long run of distinct-but-unproductive tool calls.
+agent_max_iterations = 0
+
+[llama_server.models."qwen2.5-coder:7b"]
+args = []  # dense 4.7 GB: fully resident in VRAM
+# Cannot call tools. Its template HAS the Hermes tools block, and it still
+# answers garbage -- reproduced outside the factory, 2026-07-22 (audit
+# 20260722-studio-e2e §3). Fine as a fast rung for the jobs ladder, which
+# needs no tools; refused for agent sessions, which are nothing without them.
+tools = false
+
+[llama_server.models."qwen3-coder:30b"]
+args =["--n-cpu-moe", "24", "-ub", "2048"]  # UD-Q4_K_XL; 20 is the bench optimum at short ctx but overflows at 32k KV
+
+[llama_server.models."qwen3.6:35b"]
+args = ["--n-cpu-moe", "26", "-ub", "2048", "--spec-type", "draft-mtp"]
+
+# ---- cloud lane (opt-in) -------------------------------------------------
+# Ids the chat/agent lane may address over OpenRouter. Absent section = no
+# cloud lane at all. The key MUST carry the vendor prefix: that prefix is what
+# routes a session away from llama-server (`cloud_lane.is_cloud`).
+#
+# The key comes from OPENROUTER_API_KEY in the environment, never from here.
+# A cloud model holds no VRAM: no GPU lock, no idle timer, nothing to load --
+# a session on one can run while a job owns the card.
+#
+# Careful with the paid ones: a local rung's tokens are free, so the agent's
+# retry economy (long context, several attempts) costs nothing. On a paid model
+# the same session spends real money -- the per-turn cost in the session
+# metrics is the guardrail, not decoration.
+
+# The catalogue is built from OpenRouter's own registry, because a
+# hand-written list cannot know a model's real context window, whether it
+# takes tools, or whether it still exists -- and all three were wrong here.
+# Defaults are narrow on purpose: free and tool-capable only, so a mis-click
+# cannot become a bill. Cached for a day under cache/, refreshable from the UI.
+[cloud.catalog]
+enabled = true
+free_only = true
+require_tools = true
+
+# Pins below are the operator's explicit choices: they survive the filters and
+# keep their own label. A paid model listed here is deliberate.
+[cloud.models."nvidia/nemotron-3-super-120b-a12b:free"]
+label = "Nemotron 120B (gratuit)"
+
+[cloud.models."nvidia/nemotron-3-ultra-550b-a55b:free"]
+label = "Nemotron 550B (gratuit)"
+
+# Id vérifié contre le registre le 29/07 : le point compte. `claude-haiku-4-5`
+# n'existe pas et donnait un 404 en pleine session.
+[cloud.models."anthropic/claude-haiku-4.5"]
+label = "Haiku 4.5 (payant)"
+
+# Routes directes (sigil `@`) : OpenRouter n'en sait rien, donc rien n'apparaît
+# tant que ce n'est pas épinglé ici, et `context_length` doit être écrit à la
+# main. Les trois chiffres viennent de l'API Google elle-même (29/07), pas
+# d'une estimation. Tool-calling vérifié live sur gemini-3.6-flash le 29/07.
+[cloud.models."@gemini/gemini-3.6-flash"]
+label = "Gemini 3.6 Flash (clé perso)"
+context_length = 1048576
+
+[cloud.models."@gemini/gemini-3.1-pro-preview"]
+label = "Gemini 3.1 Pro (clé perso)"
+context_length = 1048576
+
+[cloud.models."@gemini/gemini-2.5-flash"]
+label = "Gemini 2.5 Flash (clé perso)"
+context_length = 1048576
+
+# Route navigateur : pas de clé, pas de facturation au token — c'est
+# l'abonnement qui paie, et ses quotas qui limitent. Le `?model=` n'est qu'une
+# suggestion : le compte décide de ce qu'il a le droit de lancer.
+# `context_length` est écrit à la main et volontairement prudent — l'app web
+# n'annonce aucune fenêtre, et une session compactée trop tôt coûte moins cher
+# qu'un prompt tronqué en silence.
+[cloud.models."@chatgpt/gpt-5.2"]
+label = "ChatGPT 5.2 (abonnement)"
+context_length = 128000
+
+[cloud.models."@chatgpt/gpt-5.2-thinking"]
+label = "ChatGPT 5.2 Thinking (abonnement)"
+context_length = 128000
+
+[projects.opti_chess]
+runner = "pytest"
+
+[projects.GPT_code]
+runner = "pytest"

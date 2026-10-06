@@ -1,0 +1,21 @@
+{
+  "task": "roman",
+  "model": "qwen2.5-coder:7b",
+  "persona": "coder",
+  "temperature": 0.1,
+  "num_ctx": 16384,
+  "success": true,
+  "attempts_used": 1,
+  "total_seconds": 43.7,
+  "attempts": [
+    {
+      "attempt": 1,
+      "tokens_per_s": 84.5,
+      "gen_seconds": 43.5,
+      "passed": true,
+      "tests_passed": 25,
+      "tests_failed": 0,
+      "stub_violations": 0
+    }
+  ]
+}

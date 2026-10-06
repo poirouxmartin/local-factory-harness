@@ -1,0 +1,78 @@
+{
+  "summary": [
+    {
+      "model": "qwen2.5-coder:7b",
+      "task": "roman",
+      "runs": 1,
+      "success_rate": 1.0,
+      "mean_attempts": 1,
+      "mean_seconds": 13.2
+    },
+    {
+      "model": "qwen2.5-coder:7b",
+      "task": "calculator",
+      "runs": 1,
+      "success_rate": 1.0,
+      "mean_attempts": 1,
+      "mean_seconds": 3.3
+    }
+  ],
+  "raw": [
+    {
+      "task": "roman",
+      "ladder": [
+        "qwen2.5-coder:7b"
+      ],
+      "persona": "coder",
+      "num_ctx": 16384,
+      "success": true,
+      "final_model": "qwen2.5-coder:7b",
+      "escalated": false,
+      "stages_used": 1,
+      "attempts_used": 1,
+      "total_seconds": 13.2,
+      "attempts": [
+        {
+          "attempt": 1,
+          "stage": 1,
+          "model": "qwen2.5-coder:7b",
+          "temperature": 0.1,
+          "tokens_per_s": 110.9,
+          "gen_seconds": 12.9,
+          "passed": true,
+          "tests_passed": 25,
+          "tests_failed": 0,
+          "stub_violations": 0
+        }
+      ]
+    },
+    {
+      "task": "calculator",
+      "ladder": [
+        "qwen2.5-coder:7b"
+      ],
+      "persona": "coder",
+      "num_ctx": 16384,
+      "success": true,
+      "final_model": "qwen2.5-coder:7b",
+      "escalated": false,
+      "stages_used": 1,
+      "attempts_used": 1,
+      "total_seconds": 3.3,
+      "attempts": [
+        {
+          "attempt": 1,
+          "stage": 1,
+          "model": "qwen2.5-coder:7b",
+          "temperature": 0.1,
+          "tokens_per_s": 107.5,
+          "gen_seconds": 3.1,
+          "passed": true,
+          "tests_passed": 5,
+          "tests_failed": 0,
+          "stub_violations": 0
+        }
+      ]
+    }
+  ]
+}

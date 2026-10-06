@@ -1,0 +1,282 @@
+{
+  "summary": [
+    {
+      "model": "coder36",
+      "task": "roman",
+      "runs": 3,
+      "success_rate": 1.0,
+      "mean_attempts": 1,
+      "mean_seconds": 46.4
+    },
+    {
+      "model": "coder36",
+      "task": "calculator",
+      "runs": 3,
+      "success_rate": 1.0,
+      "mean_attempts": 1,
+      "mean_seconds": 14.8
+    },
+    {
+      "model": "coder36",
+      "task": "expr",
+      "runs": 3,
+      "success_rate": 1.0,
+      "mean_attempts": 1,
+      "mean_seconds": 107.3
+    }
+  ],
+  "raw": [
+    {
+      "task": "roman",
+      "ladder": [
+        "coder36"
+      ],
+      "persona": "coder",
+      "num_ctx": 32768,
+      "success": true,
+      "final_model": "coder36",
+      "escalated": false,
+      "stages_used": 1,
+      "attempts_used": 1,
+      "total_seconds": 50.3,
+      "attempts": [
+        {
+          "attempt": 1,
+          "stage": 1,
+          "model": "coder36",
+          "temperature": 0.6,
+          "tokens_per_s": 66.0,
+          "gen_seconds": 49.6,
+          "passed": true,
+          "tests_passed": 25,
+          "tests_failed": 0,
+          "stub_violations": 0
+        }
+      ]
+    },
+    {
+      "task": "roman",
+      "ladder": [
+        "coder36"
+      ],
+      "persona": "coder",
+      "num_ctx": 32768,
+      "success": true,
+      "final_model": "coder36",
+      "escalated": false,
+      "stages_used": 1,
+      "attempts_used": 1,
+      "total_seconds": 37.0,
+      "attempts": [
+        {
+          "attempt": 1,
+          "stage": 1,
+          "model": "coder36",
+          "temperature": 0.6,
+          "tokens_per_s": 67.1,
+          "gen_seconds": 36.8,
+          "passed": true,
+          "tests_passed": 25,
+          "tests_failed": 0,
+          "stub_violations": 0
+        }
+      ]
+    },
+    {
+      "task": "roman",
+      "ladder": [
+        "coder36"
+      ],
+      "persona": "coder",
+      "num_ctx": 32768,
+      "success": true,
+      "final_model": "coder36",
+      "escalated": false,
+      "stages_used": 1,
+      "attempts_used": 1,
+      "total_seconds": 51.9,
+      "attempts": [
+        {
+          "attempt": 1,
+          "stage": 1,
+          "model": "coder36",
+          "temperature": 0.6,
+          "tokens_per_s": 67.8,
+          "gen_seconds": 51.7,
+          "passed": true,
+          "tests_passed": 25,
+          "tests_failed": 0,
+          "stub_violations": 0
+        }
+      ]
+    },
+    {
+      "task": "calculator",
+      "ladder": [
+        "coder36"
+      ],
+      "persona": "coder",
+      "num_ctx": 32768,
+      "success": true,
+      "final_model": "coder36",
+      "escalated": false,
+      "stages_used": 1,
+      "attempts_used": 1,
+      "total_seconds": 13.1,
+      "attempts": [
+        {
+          "attempt": 1,
+          "stage": 1,
+          "model": "coder36",
+          "temperature": 0.6,
+          "tokens_per_s": 68.6,
+          "gen_seconds": 12.9,
+          "passed": true,
+          "tests_passed": 5,
+          "tests_failed": 0,
+          "stub_violations": 0
+        }
+      ]
+    },
+    {
+      "task": "calculator",
+      "ladder": [
+        "coder36"
+      ],
+      "persona": "coder",
+      "num_ctx": 32768,
+      "success": true,
+      "final_model": "coder36",
+      "escalated": false,
+      "stages_used": 1,
+      "attempts_used": 1,
+      "total_seconds": 16.4,
+      "attempts": [
+        {
+          "attempt": 1,
+          "stage": 1,
+          "model": "coder36",
+          "temperature": 0.6,
+          "tokens_per_s": 67.1,
+          "gen_seconds": 16.2,
+          "passed": true,
+          "tests_passed": 5,
+          "tests_failed": 0,
+          "stub_violations": 0
+        }
+      ]
+    },
+    {
+      "task": "calculator",
+      "ladder": [
+        "coder36"
+      ],
+      "persona": "coder",
+      "num_ctx": 32768,
+      "success": true,
+      "final_model": "coder36",
+      "escalated": false,
+      "stages_used": 1,
+      "attempts_used": 1,
+      "total_seconds": 14.9,
+      "attempts": [
+        {
+          "attempt": 1,
+          "stage": 1,
+          "model": "coder36",
+          "temperature": 0.6,
+          "tokens_per_s": 66.9,
+          "gen_seconds": 14.5,
+          "passed": true,
+          "tests_passed": 5,
+          "tests_failed": 0,
+          "stub_violations": 0
+        }
+      ]
+    },
+    {
+      "task": "expr",
+      "ladder": [
+        "coder36"
+      ],
+      "persona": "coder",
+      "num_ctx": 32768,
+      "success": true,
+      "final_model": "coder36",
+      "escalated": false,
+      "stages_used": 1,
+      "attempts_used": 1,
+      "total_seconds": 92.7,
+      "attempts": [
+        {
+          "attempt": 1,
+          "stage": 1,
+          "model": "coder36",
+          "temperature": 0.6,
+          "tokens_per_s": 66.8,
+          "gen_seconds": 92.5,
+          "passed": true,
+          "tests_passed": 14,
+          "tests_failed": 0,
+          "stub_violations": 0
+        }
+      ]
+    },
+    {
+      "task": "expr",
+      "ladder": [
+        "coder36"
+      ],
+      "persona": "coder",
+      "num_ctx": 32768,
+      "success": true,
+      "final_model": "coder36",
+      "escalated": false,
+      "stages_used": 1,
+      "attempts_used": 1,
+      "total_seconds": 119.8,
+      "attempts": [
+        {
+          "attempt": 1,
+          "stage": 1,
+          "model": "coder36",
+          "temperature": 0.6,
+          "tokens_per_s": 67.1,
+          "gen_seconds": 119.5,
+          "passed": true,
+          "tests_passed": 14,
+          "tests_failed": 0,
+          "stub_violations": 0
+        }
+      ]
+    },
+    {
+      "task": "expr",
+      "ladder": [
+        "coder36"
+      ],
+      "persona": "coder",
+      "num_ctx": 32768,
+      "success": true,
+      "final_model": "coder36",
+      "escalated": false,
+      "stages_used": 1,
+      "attempts_used": 1,
+      "total_seconds": 109.3,
+      "attempts": [
+        {
+          "attempt": 1,
+          "stage": 1,
+          "model": "coder36",
+          "temperature": 0.6,
+          "tokens_per_s": 67.7,
+          "gen_seconds": 109.1,
+          "passed": true,
+          "tests_passed": 14,
+          "tests_failed": 0,
+          "stub_violations": 0
+        }
+      ]
+    }
+  ]
+}

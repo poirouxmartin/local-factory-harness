@@ -1,0 +1,80 @@
+{
+  "task": "expr",
+  "ladder": [
+    "qwen2.5-coder:7b",
+    "qwen2.5-coder:14b",
+    "qwen3-coder:30b"
+  ],
+  "persona": "coder",
+  "num_ctx": 16384,
+  "success": true,
+  "final_model": "qwen3-coder:30b",
+  "escalated": true,
+  "stages_used": 3,
+  "attempts_used": 5,
+  "total_seconds": 71.3,
+  "attempts": [
+    {
+      "attempt": 1,
+      "stage": 1,
+      "model": "qwen2.5-coder:7b",
+      "temperature": 0.1,
+      "tokens_per_s": 111.1,
+      "gen_seconds": 10.6,
+      "passed": false,
+      "tests_passed": 0,
+      "tests_failed": 14,
+      "stub_violations": 0
+    },
+    {
+      "attempt": 2,
+      "stage": 1,
+      "model": "qwen2.5-coder:7b",
+      "temperature": 0.1,
+      "tokens_per_s": 110.3,
+      "gen_seconds": 6.5,
+      "passed": false,
+      "tests_passed": 0,
+      "tests_failed": 14,
+      "stub_violations": 0,
+      "plateau": true
+    },
+    {
+      "attempt": 3,
+      "stage": 2,
+      "model": "qwen2.5-coder:14b",
+      "temperature": 0.3,
+      "tokens_per_s": 58.8,
+      "gen_seconds": 15.2,
+      "passed": false,
+      "tests_passed": 11,
+      "tests_failed": 3,
+      "stub_violations": 0
+    },
+    {
+      "attempt": 4,
+      "stage": 2,
+      "model": "qwen2.5-coder:14b",
+      "temperature": 0.3,
+      "tokens_per_s": 57.5,
+      "gen_seconds": 10.9,
+      "passed": false,
+      "tests_passed": 11,
+      "tests_failed": 3,
+      "stub_violations": 0,
+      "plateau": true
+    },
+    {
+      "attempt": 5,
+      "stage": 3,
+      "model": "qwen3-coder:30b",
+      "temperature": 0.1,
+      "tokens_per_s": 64.2,
+      "gen_seconds": 26.3,
+      "passed": true,
+      "tests_passed": 14,
+      "tests_failed": 0,
+      "stub_violations": 0
+    }
+  ]
+}

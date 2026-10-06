@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>local-factory — studio</title>
+<meta name="factory-token" content="{{TOKEN}}">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2032%2032%27%3E%3Crect%20width%3D%2732%27%20height%3D%2732%27%20rx%3D%278%27%20fill%3D%27%231d1d2a%27%2F%3E%3Cg%20transform%3D%27translate%284%204%29%27%20fill%3D%27none%27%20stroke%3D%27%23d2b672%27%20stroke-width%3D%271.8%27%20stroke-linejoin%3D%27round%27%3E%3Cpath%20d%3D%27M3%2020.5V11l6%203.5V11l6%203.5V9l6%204v7.5z%27%20fill%3D%27%23d2b672%27%20fill-opacity%3D%27.25%27%2F%3E%3Cpath%20d%3D%27M5.5%2010V3.5h3V10%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
+<link rel="stylesheet" href="/static/tokens.css?v=9">
+<link rel="stylesheet" href="/static/style.css?v=9">
+</head>
+<body>
+<div class="banner-main">
+<nav>
+  <h1><svg class="ico lg" aria-hidden="true"><use href="/static/icons.svg#ico-factory"></use></svg>local-factory</h1>
+  <a href="#jobs" data-view="jobs">Jobs</a>
+  <a href="#delegate" data-view="delegate">Déléguer</a>
+  <a href="#dashboard" data-view="dashboard">Dashboard</a>
+  <a href="#runtime" data-view="runtime">Modèles</a>
+  <a href="#chat" data-view="chat">Chat</a>
+  <a href="#projects" data-view="projects">Projets</a>
+  <div class="soon" title="à venir">Goals</div>
+  <a href="#benchmarks" data-view="benchmarks">Benchmarks</a>
+  <div class="soon" title="à venir">Agents</div>
+</nav>
+</div>
+<div class="content-area">
+<div id="chat-sessions-list"></div>
+<main id="main"></main>
+<div id="plan-slot-container"></div>
+</div>
+<div id="error" hidden></div>
+<!-- Les scripts portent la meme marque que le CSS: sans elle, un studio deja
+     ouvert garde l'ancien app.js et le correctif ne se voit jamais. -->
+<script src="/static/markdown.js?v=9"></script>
+<script src="/static/activity.js?v=9"></script>
+<script src="/static/app.js?v=9"></script>
+</body>
+</html>

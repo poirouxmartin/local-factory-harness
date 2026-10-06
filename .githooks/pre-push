@@ -1,0 +1,31 @@
+#!/bin/sh
+# Nothing red reaches the remote.
+#
+# 4744f84 (2026-07-20) called chat_context.estimate_tokens, which does not
+# exist: 13 tests were red from the second it landed, and main stayed broken
+# for two days because nothing ran them.
+#
+# `py -3` and not `py -3.9`: 3.12 became the factory standard on 2026-07-28.
+# Pinning the interpreter is still the point -- a red push must mean the same
+# thing every time -- but it has to be pinned to the one that JUDGES:
+# `pytest_runner.py` builds the judge command from sys.executable, so the gate
+# and the corpus have to agree. 3.12 is also the only interpreter here with
+# playwright. Baselines were re-seeded under it the same day.
+#
+# `-m "not browser"`: a test needing a live browser or a live studio cannot
+# gate a push. Those hung the suite at 14% for ten minutes on 2026-07-28 --
+# and a gate that hangs is worse than no gate, because nobody waits for it.
+# Run them yourself: py -3 -m pytest harness/tests -m browser
+# Escape hatch, when you know why: git push --no-verify
+
+root=$(git rev-parse --show-toplevel) || exit 1
+cd "$root" || exit 1
+
+echo "pre-push: running harness/tests (~2 min)..."
+if py -3 -m pytest harness/tests -q -m "not browser"; then
+  exit 0
+fi
+
+echo "" >&2
+echo "refused: the suite is red. Fix it, or push with --no-verify." >&2
+exit 1

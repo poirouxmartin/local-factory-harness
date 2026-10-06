@@ -1,0 +1,7 @@
+{
+  "name": "calculator",
+  "target_file": "calculator.py",
+  "test_args": ["-q"],
+  "max_attempts": 5,
+  "goal": "Fix `Calculator.multiply` so it returns the product a*b (currently it returns a+b). All tests in test_calculator.py must pass. Do not change method signatures."
+}

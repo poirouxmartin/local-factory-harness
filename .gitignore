@@ -1,0 +1,73 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+jobs/
+sandbox/
+.cache/
+.playwright-mcp/
+regression/runs/
+
+# Local image-gen experiment (the local AI's own project, kept on disk, not
+# part of the factory codebase) + its debug leftovers and virtualenvs.
+ComfyUI/
+local-image-gen/
+.venv/
+venv/
+logs/
+server_*.log
+server_log.txt
+/analyze_*.py
+/debug_*.py
+/diag*.py
+/diagnose_*.py
+/extract_chat.py
+/fix_*.py
+/list_chats.py
+/patch_frontend.py
+/run_comfyui.py
+/test_pipeline.py
+/test_server*.py
+/validate_lessons.py
+
+# Model weights and their server logs: gigabytes, never versioned.
+models/gguf/
+# Scratch re-run of a client repo, its own git repo.
+experiments/crgpd-rerun/
+
+# Bench scratch: seeded workspaces (each is its own git repo) and run output.
+experiments/agent_bench/_work/
+experiments/agent_bench/*.jsonl
+experiments/agent_bench/bench.log
+# ...but keep the dated raw evidence a report cites.
+!experiments/agent_bench/*_2[0-9][0-9][0-9][0-9][0-9][0-9][0-9].jsonl
+!experiments/agent_bench/bench_*_2[0-9][0-9][0-9][0-9][0-9][0-9][0-9].log
+smoke.out
+smoke.err
+run_*.out
+run_*.err
+tools_cost.out
+tools_cost.err
+probe_srv.out
+probe_srv.err
+
+# ComfyUI runtime log from the image-gen experiment.
+comfyui.log
+
+# Live agent validation: the BlitzVolley worktree it drives, and its run output.
+experiments/bv-agent/
+experiments/agent_live/run_*/
+experiments/agent_live/live*.out
+experiments/agent_live/live*.err
+experiments/agent_live/*.patch
+
+# Reviewer bench: corpus and results are derived from jobs/ and GPU runs.
+experiments/reviewer_bench/results/
+experiments/coder_bench/runs/
+
+# poste de travail : maquettes de brainstorm, jamais versionnees
+.superpowers/
+cache/
+secrets.toml
+factory.local.toml
+
+.hf_token

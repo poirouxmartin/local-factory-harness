@@ -1,0 +1,81 @@
+/* Everything the studio's look is made of. style.css consumes these and
+   holds no literal colour, font or radius of its own -- which is why the
+   Jobs, Dashboard, Models and Projects views change appearance without
+   being touched.
+
+   Self-hosted woff2, flat in harness/web/: the /static route forbids
+   separators (factory_web.py:436) and the studio must run offline. */
+
+@font-face {
+  font-family: "Instrument Sans";
+  src: url("/static/instrument-sans.woff2") format("woff2");
+  font-weight: 400 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/static/jetbrains-mono.woff2") format("woff2");
+  font-weight: 400 500;
+  font-display: swap;
+}
+
+:root {
+  /* Contraste remonté le 29/07. Le grief n'était pas le texte principal
+     (#d7d8e2 sur #121219 = 13,7:1) mais les SURFACES : `--line` #262634 sur
+     `--bg` #121219 = 1,25:1, donc un panneau, un tableau et le fond se
+     lisaient comme une seule nappe. Le fond descend, le panneau monte, la
+     ligne passe à 1,57:1 -- une bordure qu'on voit. */
+  /* Deuxième passe le 29/07 : « il manque encore un peu de contraste, les gris
+     sont à nuancer ». Le grief restant n'était plus la bordure mais le NOMBRE
+     de gris -- fond, panneau et survol partageaient presque la même valeur, et
+     tout texte secondaire partageait `--dim`. Cinq marches au lieu de trois :
+     chaque surface se distingue de celle qui la porte, et le texte tertiaire
+     (horodatages, unités) cesse de peser autant qu'une légende. */
+  --bg: #0a0a10;
+  --panel: #1d1d2a;
+  --panel-2: #272738;   /* survol, surface posée sur un panneau */
+  --line: #3a3a54;
+  --fg: #e8e9f2;
+  --dim: #9fa1b8;       /* légendes, texte secondaire */
+  --dim-2: #74778d;     /* horodatages, unités -- présent, jamais lu d'abord */
+
+  /* Gold sits where the old orange "rejected" badge sat, and the two were
+     confused on sight (mockup, 2026-07-28). The accent is reserved for what
+     is ACTIVE: current tab, agent at work, inline code, primary buttons. */
+  --accent: #d2b672;
+  --accent-deep: #bd9c58;
+  /* Le seul texte lisible sur l'or : 9,18:1. Du blanc dessus donne 1,97:1 --
+     c'était le cas du bouton primaire, des bulles utilisateur, du badge « en
+     cours » et du bouton de retour en bas. */
+  --on-accent: #1a1608;
+
+  /* Deux jeux, parce qu'une pastille et un mot n'ont pas le même problème.
+     Sur le fond, un texte d'état doit rester lisible -- c'est `--ok`/`--err`.
+     REMPLI, le même ton criait à côté de l'or : les pastilles descendent d'un
+     cran et portent `--on-solid`, ce qui les rapproche de la DA au lieu de la
+     trouer. (Dicté le 29/07 : « plus foncées et plus proches de la DA ».) */
+  --ok: #4fbc90;
+  --err: #d0655b;
+  --rejected: #b98ad9;   /* was orange */
+  --dead: #7a8194;       /* was purple */
+
+  --ok-solid: #2f7d5e;
+  --err-solid: #9e4038;
+  --rejected-solid: #74519a;
+  --dead-solid: #4a5064;
+  --on-solid: #f2f4fa;
+
+  --font-ui: "Instrument Sans", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+
+  --radius: 10px;
+  --radius-lg: 14px;
+}
+
+/* Three settings carry as much of the "elegant" as the typeface does. */
+body { line-height: 1.6; }
+.num, td.num, .metric-value { font-variant-numeric: tabular-nums; }
+.label-caps {
+  font-size: 10px; letter-spacing: .11em; text-transform: uppercase;
+  color: var(--dim);
+}

@@ -1,0 +1,7 @@
+{
+  "success": true,
+  "attempts": 2,
+  "stages_used": 1,
+  "final_model": "llamaserver/qwen3-coder-30b-UD-Q4_K_XL",
+  "total_seconds": 128.4
+}

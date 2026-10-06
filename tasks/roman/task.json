@@ -1,0 +1,7 @@
+{
+  "name": "roman",
+  "target_file": "roman.py",
+  "test_args": ["-q"],
+  "max_attempts": 5,
+  "goal": "Fix `from_roman` so subtractive notation (IV, IX, XL, XC, CD, CM) is handled correctly. All tests in test_roman.py must pass. Do not change the public function signatures."
+}
