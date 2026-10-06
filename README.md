@@ -5,7 +5,7 @@ A Python harness that drives language models through a bounded
 single 12 GB consumer GPU (llama.cpp / Ollama), and cloud routes when a job needs
 more (OpenRouter, Anthropic, OpenAI, Mistral, DeepSeek, Gemini).
 
-Project page: [martinpoiroux.com/en/projects/local-factory](https://martinpoiroux.com/en/projects/local-factory/)
+Project page: [martinpoiroux.com/projets/local-factory/](https://martinpoiroux.com/projets/local-factory/)
 
 > This repository is a curated snapshot of a private working repository: a single
 > commit, without session transcripts, audits or machine-specific files. The code,
